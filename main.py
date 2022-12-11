@@ -14,7 +14,7 @@ def end_title(input_user, number=0):
 counter_begin = 0
 counter_end = 0
 
-with open("A1F496R1.txt", "r") as file_old, open("result/A1F496R1.txt", "w") as file_new:
+with open("A1F496R1.txt", "r") as file_old, open("result/A1F496R1.txt", "w+") as file_new:
     for line in file_old:
         if begin_title(input_user, counter_begin) in line:
             print(line)
