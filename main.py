@@ -18,6 +18,13 @@ with open("A1F496R1.txt", "r") as file_old, open("result/A1F496R1.txt", "w") as 
     for line in file_old:
         if begin_title(input_user, counter_begin) in line:
             print(line)
+            # Из строки создаем список, разбивая слова по пробелам
+            line_to_list = line.split(' ')
+            # Увеличиваем 2,3 значения списка на 1
+            line_to_list[2] = str(int(line_to_list[2]) + 1)
+            line_to_list[3] = str(int(line_to_list[3]) + 1)
+            line = ' '.join(line_to_list)
+
             file_new.write(
                 line.replace(begin_title(input_user, counter_begin), begin_title(input_user, counter_begin + 1))
             )
