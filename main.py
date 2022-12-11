@@ -1,58 +1,32 @@
 from pathlib import Path
+Path("result").mkdir(parents=True, exist_ok=True)
 
-def input_user() -> str:
-    user_input = input("Введите символы после begin (н-р, s35): ")
-    return user_input
+input_user = input("Введите символы после begin (н-р, s35): ")
 
-def file_processing():
-    # Считаем количество измененных блоков
-    quantity_modified_blocks = 0
-    with open("A1F496R1.txt") as file, open("result/A1F496R1.txt", "w") as new_file:
-        for line in file:
-            if begin_title in line:
-                print(f"Блок begin")
-                print(f"Неизмененная строка: {line}", end='')
-                # Из строки создаем список, разбивая слова по пробелам
-                line_to_list = line.split(' ')
-                # Увеличиваем 1,2,3 значения списка на 1
-                line_to_list[1] = line_to_list[1][:1] + str(int(line_to_list[1][1:]) + 1)
-                line_to_list[2] = str(int(line_to_list[2]) + 1)
-                line_to_list[3] = str(int(line_to_list[3]) + 1)
-                # Из измененного списка создаем строку
-                line = ' '.join(line_to_list)
-                print(f"Измененная строка: {line}")
-                new_file.write(line)
-                quantity_modified_blocks += 1
-            elif end_title in line:
-                print(f"Блок end")
-                print(f"Неизмененная строка: {line}", end='')
-                # Из строки создаем список, разбивая слова по пробелам
-                line_to_list = line.split(' ')
-                line_to_list[1] = line_to_list[1][:1] + str(int(line_to_list[1][1:]) + 1)
-                # Из измененного списка создаем строку
-                line = ' '.join(line_to_list)
-                print(f"Измененная строка: {line}")
-                new_file.write(line)
-            else:
-                new_file.write(line)
+def begin_title(input_user, number=0):
+    begin_title = "begin " + input_user[:1] + str(int(input_user[1:]) + number)
+    return begin_title
 
-    return quantity_modified_blocks
+def end_title(input_user, number=0):
+    end_title = "end " + input_user[:1] + str(int(input_user[1:]) + number)
+    return end_title
 
+counter_begin = 0
+counter_end = 0
 
-if __name__ == "__main__":
-    # Проверяем, создана ли дирректрия result для сохранения файла после обработки
-    Path("result").mkdir(parents=True, exist_ok=True)
-
-    # Получаем ответ от пользователя
-    response_user = input_user()
-
-    begin_title = "begin " + response_user
-    end_title = "end " + response_user
-
-    quantity_modified_blocks = file_processing()
-    print(f"Количество измененных блоков: {quantity_modified_blocks}")
-
-
-        #print(f"begin_name: {begin_name}")
-        #begin_name = line_to_list[1]
-        #print(f"begin_name: {begin_name}")
+with open("A1F496R1.txt", "r") as file_old, open("result/A1F496R1.txt", "w") as file_new:
+    for line in file_old:
+        if begin_title(input_user, counter_begin) in line:
+            print(line)
+            file_new.write(
+                line.replace(begin_title(input_user, counter_begin), begin_title(input_user, counter_begin + 1))
+            )
+            counter_begin += 1
+        elif end_title(input_user, counter_end) in line:
+            print(line)
+            file_new.write(
+                line.replace(end_title(input_user, counter_end), end_title(input_user, counter_end + 1))
+            )
+            counter_end += 1
+        else:
+            file_new.write(line)
